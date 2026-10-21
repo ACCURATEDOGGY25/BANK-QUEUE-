@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bank Queue Manager</title>
+<style>
+:root{--site-primary:#173f35;--site-secondary:#e2eee8;--site-background:#f4f7f5;--site-on-primary:#ffffff;--site-on-secondary:#173f35;--site-on-background:#172820;--site-font-body:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--site-font-heading:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--site-heading-scale:1;--site-spacing-scale:1;--site-radius-scale:1;--site-decoration-opacity:1;--surface:#ffffff;--muted:#596b61;--line:#dce6e0;--page:#f4f7f5;color-scheme:light}
+*{box-sizing:border-box}body{margin:0;background:var(--site-background);color:var(--site-on-background);font-family:var(--site-font-body)}.app{min-height:100vh;background:var(--site-background);color:var(--site-on-background)}header{background:var(--site-primary);color:var(--site-on-primary);padding:22px max(20px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:12px}.logo{height:44px;width:44px;border-radius:14px;background:#ffffff20;display:grid;place-items:center;font-size:23px}.brand h1{margin:0;font-size:20px;letter-spacing:-.03em}.brand p{margin:4px 0 0;color:#d2e5dc;font-size:13px}.clock{font-size:13px;color:#d2e5dc;text-align:right}main{max-width:1120px;margin:auto;padding:32px 20px 50px}.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:25px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:800;color:#367a60}.hero h2{font-size:calc(34px * var(--site-heading-scale));letter-spacing:-.045em;margin:8px 0}.hero p{color:var(--muted);margin:0;line-height:1.55}.btn{border:0;border-radius:calc(11px * var(--site-radius-scale));padding:12px 16px;font:inherit;font-size:14px;font-weight:750;cursor:pointer;background:var(--site-primary);color:var(--site-on-primary);transition:transform .15s,opacity .15s}.btn:hover{opacity:.9;transform:translateY(-1px)}.btn.light{background:var(--site-secondary);color:var(--site-on-secondary)}.btn.outline{background:transparent;border:1px solid var(--line);color:var(--site-on-background)}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}.stat,.panel{color:#172820;border:1px solid var(--line);background:#ffffff;border-radius:calc(18px * var(--site-radius-scale));}.stat{padding:20px}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}.stat-icon{width:34px;height:34px;display:grid;place-items:center;background:var(--site-secondary);color:var(--site-on-secondary);border-radius:11px;font-size:17px}.stat strong{display:block;font-size:32px;letter-spacing:-.05em;margin-top:10px}.stat small{display:block;color:var(--muted);margin-top:4px}.layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.8fr);gap:18px;align-items:start}.panel{overflow:hidden}.panel-head{padding:19px 21px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}.panel-head h3{font-size:16px;margin:0}.panel-head p{font-size:12px;color:var(--muted);margin:4px 0 0}.queue-list{padding:7px 20px 15px;background:#ffffff;color:#172820}.queue-item{display:flex;align-items:center;gap:13px;padding:15px 0;border-bottom:1px solid var(--line)}.queue-item:last-child{border-bottom:0}.number{width:38px;height:38px;border-radius:12px;background:var(--site-secondary);color:var(--site-on-secondary);display:grid;place-items:center;font-size:13px;font-weight:800;flex-shrink:0}.person{min-width:0;flex:1}.person strong{display:block;font-size:14px;color:#172820;overflow-wrap:anywhere}.person span{display:block;color:#596b61;font-size:12px;margin-top:4px}.tag{font-size:11px;font-weight:800;border-radius:99px;padding:6px 9px;background:#e6f4eb;color:#205b39}.empty{padding:35px 20px;text-align:center;color:#596b61;font-size:14px;line-height:1.6}.side-content{padding:20px}.next-label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;color:var(--muted)}.next-card{margin:13px 0 18px;padding:17px;background:#edf5f0;color:#173f35;border-radius:15px}.next-card .ticket{font-size:12px;opacity:.75}.next-card h4{font-size:20px;margin:8px 0 5px;overflow-wrap:anywhere}.next-card p{font-size:13px;margin:0;opacity:.8}.serve{width:100%;padding:14px}.side-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.side-actions .btn{padding:10px 8px;font-size:12px}.hint{font-size:12px;color:var(--muted);line-height:1.6;margin:18px 0 0}.activity{margin-top:18px}.activity-list{padding:4px 20px 12px}.activity-row{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:12px}.activity-row:last-child{border:0}.activity-row span{color:var(--muted)}.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:20px;font-size:12px;color:var(--muted)}.modal-backdrop{position:fixed;inset:0;background:#06130dcc;display:none;place-items:center;padding:18px;z-index:5}.modal-backdrop.open{display:grid}.modal{width:min(100%,420px);padding:24px;border-radius:18px;border:1px solid #d6e0da;background:#ffffff;color:#172820;box-shadow:0 18px 60px #06130d40}.modal h3{margin:0 0 7px}.modal>p{color:#53645b;font-size:13px;line-height:1.5}.field{display:grid;gap:7px;margin:16px 0}.field label{font-size:13px;color:#34483d;font-weight:650}.field input{display:block;width:100%;min-height:46px;padding:12px;border-radius:10px;border:1px solid #aebfb4;background:#ffffff !important;color:#172820 !important;-webkit-text-fill-color:#172820;font:inherit;opacity:1}.field input::placeholder{color:#718078;opacity:1}.field input:focus{outline:2px solid #367a60;outline-offset:1px;border-color:#367a60}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--site-primary);color:white;padding:12px 17px;border-radius:12px;font-size:13px;box-shadow:0 8px 30px #0002;display:none;z-index:8}.toast.show{display:block}@media(max-width:760px){.layout{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.stats{gap:9px}.stat{padding:14px}.stat strong{font-size:26px}.stat-top{align-items:flex-start;gap:5px;flex-direction:column}.clock{display:none}}@media(max-width:440px){main{padding:24px 13px 35px}.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.panel-head{padding:16px}.queue-list{padding:4px 15px 12px}}
+</style>
+</head>
+<body><div class="app">
+<header><div class="brand"><div class="logo">↗</div><div><h1>Bank Queue Manager</h1><p>Educational queue-management prototype</p></div></div><div class="clock" id="dateTime"></div></header>
+<main><section class="hero"><div><div class="eyebrow">Branch operations / customer service</div><h2>Keep the line moving.</h2><p>Manage waiting customers fairly, one ticket at a time.</p></div><button type="button" class="btn" id="addBtn" onclick="openModal()">＋ Add customer</button></section>
+<section class="stats"><div class="stat"><div class="stat-top">Customers waiting <span class="stat-icon">☷</span></div><strong id="waitingCount">0</strong><small>In the current queue</small></div><div class="stat"><div class="stat-top">Last ticket served <span class="stat-icon">◎</span></div><strong id="servingCount">—</strong><small id="servingName">No ticket served yet</small></div><div class="stat"><div class="stat-top">Served today <span class="stat-icon">✓</span></div><strong id="servedCount">0</strong><small>Completed service tickets</small></div></section>
+<div class="layout"><section class="panel"><div class="panel-head"><div><h3>Waiting queue</h3><p>First in, first out (FIFO)</p></div><button class="btn outline" id="refreshBtn">↻ Refresh</button></div><div class="queue-list" id="queueList"></div></section>
+<aside><section class="panel"><div class="panel-head"><div><h3>Next customer</h3><p>Ready at the front of the line</p></div></div><div class="side-content"><div class="next-label">Up next</div><div class="next-card" id="nextCard"><span class="ticket">NEXT TICKET</span><h4>No one waiting</h4><p>Add a customer to start the queue.</p></div><button class="btn serve" id="serveBtn">Serve next customer →</button><div class="side-actions"><button class="btn outline" id="clearBtn">Clear queue</button></div><p class="hint">Customers are served in arrival order. Serving the next person removes them from the waiting queue and records their ticket as completed.</p></div></section>
+<section class="panel activity"><div class="panel-head"><div><h3>Recent activity</h3><p>Latest queue updates</p></div></div><div class="activity-list" id="activityList"><div class="empty">No activity yet.</div></div></section></aside></div>
+<section class="panel activity"><div class="panel-head"><div><h3>Served customer records</h3><p>Completed tickets recorded during this session</p></div><button type="button" class="btn" id="exportBtn">Export CSV ↓</button></div><div id="servedRecords" class="queue-list"><div class="empty">No customers served yet. Completed tickets will appear here.</div></div></section>
+<div class="footer"><span>Educational prototype — not an official bank system.</span><span>Do not enter real customer or financial information. Queue and served records are saved in this browser on this device. Export served records as CSV to keep or transfer a copy.</span></div>
+</main></div>
+<div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()"><form class="modal" id="customerForm" onsubmit="return handleCustomerSubmit(event)"><h3>Add a customer</h3><p>Enter a name and the service they need. A ticket number will be assigned automatically.</p><div class="field"><label for="customerName">Customer name</label><input id="customerName" maxlength="70" required placeholder="Enter a fictional customer name"></div><div class="field"><label for="serviceType">Service required</label><input id="serviceType" maxlength="70" required placeholder="Enter a service type"></div><div class="modal-actions"><button type="button" class="btn outline" id="cancelBtn" onclick="closeModal()">Cancel</button><button type="button" class="btn" id="joinQueueBtn">Join queue</button></div></form></div><div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+// QUEUE: customers join at the end and are served from the front (FIFO).
+const STORAGE_KEY='queueflow-bank-queue-v1';
+let savedState={};
+try{savedState=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')||{};}catch(e){savedState={};}
+let queue=Array.isArray(savedState.queue)?savedState.queue:[];
+let servedHistory=Array.isArray(savedState.servedHistory)?savedState.servedHistory:[];
+let nextTicket=Math.max(Number(savedState.nextTicket)||101,...queue.map(c=>Number(c.ticket)||0),...servedHistory.map(c=>Number(c.ticket)||0),100)+ (savedState.nextTicket?0:1);
+let servedToday=servedHistory.length;
+let lastServed=servedHistory.length?servedHistory[servedHistory.length-1]:null;
+let activity=Array.isArray(savedState.activity)?savedState.activity:[];
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({queue,servedHistory,nextTicket,activity}));}catch(e){showToast('Could not save in this browser. Export your records regularly.');}}
+const $=id=>document.getElementById(id);
+function timeNow(){return new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});}
+function escapeHTML(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function logActivity(message,detail){activity.unshift({message,detail:detail||timeNow()});activity=activity.slice(0,5);}
+function render(){
+ saveState();
+ $('dateTime').textContent=new Date().toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+ $('waitingCount').textContent=queue.length;$('servingCount').textContent=lastServed?`#${lastServed.ticket}`:'—';$('servingName').textContent=lastServed?`Last served: ${lastServed.name}`:'No ticket served yet';$('servedCount').textContent=servedToday;
+ const list=$('queueList');list.innerHTML='';
+ if(!queue.length){list.innerHTML='<div class="empty">Your queue is empty.<br>Add a customer and they will appear here.</div>';}
+ queue.forEach((customer,index)=>{const row=document.createElement('div');row.className='queue-item';row.innerHTML=`<div class="number">#${customer.ticket}</div><div class="person"><strong>${escapeHTML(customer.name)}</strong><span>${escapeHTML(customer.service)} · Joined ${escapeHTML(customer.joined)}</span></div>${index===0?'<span class="tag">Up next</span>':`<span class="tag" style="background:var(--page);color:var(--muted)">Position ${index+1}</span>`}`;list.appendChild(row);});
+ const next=queue[0];$('nextCard').innerHTML=next?`<span class="ticket">TICKET #${next.ticket}</span><h4>${escapeHTML(next.name)}</h4><p>${escapeHTML(next.service)} · Joined ${escapeHTML(next.joined)}</p>`:'<span class="ticket">NEXT TICKET</span><h4>No one waiting</h4><p>Add a customer to start the queue.</p>';
+ $('serveBtn').disabled=!next;$('serveBtn').style.opacity=next?'1':'.5';$('serveBtn').setAttribute('aria-disabled',String(!next));
+ $('activityList').innerHTML=activity.length?activity.map(a=>`<div class="activity-row"><div>${escapeHTML(a.message)}</div><span>${escapeHTML(a.detail)}</span></div>`).join(''):'<div class="empty">No activity yet.</div>';
+ const records=$('servedRecords');
+ records.innerHTML=servedHistory.length?servedHistory.slice().reverse().map(c=>`<div class="queue-item"><div class="number">#${c.ticket}</div><div class="person"><strong>${escapeHTML(c.name)}</strong><span>${escapeHTML(c.service)} · Joined ${escapeHTML(c.joined)} · Served ${escapeHTML(c.servedAt)}</span></div><span class="tag">Completed</span></div>`).join(''):'<div class="empty">No customers served yet. Completed tickets will appear here.</div>';
+}
+function showToast(message){const el=$('toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
+function openModal(){$('modalBackdrop').classList.add('open');$('customerName').focus();}function closeModal(){$('modalBackdrop').classList.remove('open');$('customerForm').reset();}
+// Inline handlers on the primary controls make the actions explicit and reliable in static hosting.
+function addCustomer(){
+ const nameField=$('customerName');
+ const serviceField=$('serviceType');
+ if(!nameField||!serviceField){showToast('The customer form could not load. Please refresh the page.');return;}
+ const name=nameField.value.trim();
+ const service=serviceField.value.trim();
+ if(!name||!service){showToast('Please enter both a customer name and service.');return;}
+ const customer={ticket:nextTicket++,name,service,joined:timeNow()};
+ queue.push(customer);
+ saveState();
+ logActivity(`Customer added to queue`,`Ticket #${customer.ticket}`);
+ closeModal();render();showToast(`Ticket #${customer.ticket} added to the queue.`);
+}
+function handleCustomerSubmit(event){if(event)event.preventDefault();addCustomer();return false;}
+// Use explicit DOM listeners so the main actions work reliably on static hosting.
+document.getElementById('addBtn').addEventListener('click', openModal);
+document.getElementById('joinQueueBtn').addEventListener('click', addCustomer);
+document.getElementById('customerForm').addEventListener('submit', handleCustomerSubmit);
+document.getElementById('cancelBtn').addEventListener('click', closeModal);
+$('serveBtn').addEventListener('click',()=>{if(!queue.length)return;lastServed=queue.shift();lastServed.servedAt=new Date().toLocaleString();servedHistory.push({...lastServed});servedToday=servedHistory.length;saveState();logActivity(`${lastServed.name} was served`,`Ticket #${lastServed.ticket}`);render();showToast(`Now served: ${lastServed.name}`);});
+$('exportBtn').addEventListener('click',()=>{
+ if(!servedHistory.length){showToast('There are no served customer records to export yet.');return;}
+ const columns=['Ticket Number','Customer Name','Service Required','Time Joined','Time Served'];
+ const quote=value=>'"'+String(value??'').replace(/"/g,'""')+'"';
+ const rows=servedHistory.map(c=>[c.ticket,c.name,c.service,c.joined,c.servedAt]);
+ const csv=[columns,...rows].map(row=>row.map(quote).join(',')).join('\r\n');
+ const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='served-customer-records.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+ showToast('Served customer CSV downloaded.');
+});
+$('refreshBtn').addEventListener('click',()=>{render();showToast('Queue view updated.');});
+$('clearBtn').addEventListener('click',()=>{if(!queue.length){showToast('The queue is already empty.');return;}if(confirm(`Remove all ${queue.length} waiting customer(s) from the queue?`)){const removed=queue.length;queue=[];saveState();logActivity(`Cleared ${removed} waiting customer(s)`,'Queue reset');render();showToast('Waiting queue cleared.');}});
+render();
+</script></body></html>
